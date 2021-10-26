@@ -1,9 +1,6 @@
-name: STAC Validation
+name: STAC Validator
 
-on:
-  pull_request:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   validate:
@@ -19,4 +16,4 @@ jobs:
     - name: Validate STAC
       shell: bash
       run: |
-        stac validate cataloga.json
+        stac validate catalog.json
