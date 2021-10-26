@@ -16,4 +16,4 @@ jobs:
     - name: Validate STAC
       shell: bash
       run: |
-        stac validate catalog.json
+        stac validate --recurse --no-links --no-assets catalog.json
