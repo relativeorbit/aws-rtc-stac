@@ -1,0 +1,22 @@
+name: STAC Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install stactools
+      run: |
+        pip install stactools~=0.2
+
+    - name: Validate STAC
+      shell: bash
+      run: |
+        stac validate cataloga.json
