@@ -43,7 +43,7 @@ jobs:
         miniforge-version: latest
 #        mamba-version: "*"
         environment-file: environment.yml
-        activate-environment: hackweek
+        activate-environment: aws-rtc-stac
         use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
     - name: List conda packages
@@ -55,7 +55,6 @@ jobs:
         ./s1_rtc_stac.py ${{ github.event.inputs.mgrs }}
         
     - name: Validate STAC
-      shell: bash
       run: |
         stac validate --recurse --no-links --no-assets catalog.json
 
