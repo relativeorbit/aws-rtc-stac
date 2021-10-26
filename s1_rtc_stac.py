@@ -9,7 +9,9 @@ import pystac
 import os
 from stactools.sentinel1.rtc.stac import create_item, create_collection
 
-print(os.environ)
+# Picks up all environment variables on github runner
+#print(os.environ)
+# e.g. 'AWS_REGION' 'GITHUB_REPOSITORY': 'relativeorbit/aws-rtc-stac'
 
 MGRS = sys.argv[1]
 fs = s3fs.S3FileSystem(anon=True)
@@ -29,18 +31,36 @@ def get_paths(zone=12, latLabel='S', square='YJ', year='*', date='*'):
     hrefs = [s3_to_http(x) for x in keys]
     return hrefs
 
+def get_current_item_ids(catalog):
+    items = [item.id for item in catalog.get_all_items()]
+    return items
+
 if __name__ == '__main__':
-    paths = get_paths(zone=MGRS[:2], latLabel=MGRS[2], square=MGRS[3:], year=2020)
+    if not os.path.isfile('catalog.json'):
+        catalog = pystac.Catalog(id='aws-rtc-stac',
+                                 description='https://github.com/relativeorbit/aws-rtc-stac')
+        collection = create_collection()
+    else:
+        catalog = pystac.read_file('catalog.json')
+        collection = cat.get_child('sentinel1-rtc-aws')
+
+    paths = get_paths(zone=MGRS[:2], latLabel=MGRS[2], square=MGRS[3:])
+    current_items = get_current_item_ids(catalog)
+    print(f'{len(current_items)} Items in STAC catalog')
+    new_paths = [p for p in paths if not p[-22:] in current_items]
+    print(f'Adding {len(new_paths)} new Items...')
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        items = executor.map(create_item, paths)
+        items = executor.map(create_item, new_paths)
 
-    catalog = pystac.Catalog(id='aws-rtc-stac',
-                             description='https://github.com/relativeorbit/aws-rtc-stac')
-    collection = create_collection()
     collection.add_items(items)
     catalog.add_child(collection)
     catalog.generate_subcatalogs(template='${sentinel:mgrs}/${year}')
     catalog.normalize_hrefs('./')
-    catalog.validate()
+    catalog.validate() #catalog.validate_all()
     catalog.save(catalog_type=pystac.CatalogType.RELATIVE_PUBLISHED)
+
+    #https://raw.githubusercontent.com/relativeorbit/aws-rtc-stac/main/catalog.json
+    #ROOTURL = f'https://github.com/{os.environ["GITHUB_REPOSITORY"]}'
+    #catalog.normalize_hrefs(ROOTURL)
+    #catalog.save(catalog_type=pystac.CatalogType.ABSOLUTE_PUBLISHED, dest_href='./tmp')
