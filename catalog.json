@@ -15,11 +15,6 @@
       "type": "application/json"
     },
     {
-      "rel": "child",
-      "href": "./sentinel1-rtc-aws/collection.json",
-      "type": "application/json"
-    },
-    {
       "rel": "self",
       "href": "/Users/scott/GitHub/relativeorbit/aws-rtc-stac/catalog.json",
       "type": "application/json"
