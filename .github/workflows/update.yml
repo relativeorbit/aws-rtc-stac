@@ -52,7 +52,7 @@ jobs:
 
     - name: Generate STAC
       run: |
-        ./rtc2stac.py ${{ github.event.inputs.mgrs }}
+        ./s1_rtc_stac.py ${{ github.event.inputs.mgrs }}
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3

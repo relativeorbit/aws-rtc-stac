@@ -2,6 +2,7 @@
 '''
 Generate example STAC from test data
 '''
+import concurrent.futures
 import s3fs
 import sys
 import pystac
