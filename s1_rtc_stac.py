@@ -42,7 +42,7 @@ if __name__ == '__main__':
         collection = create_collection()
     else:
         catalog = pystac.read_file('catalog.json')
-        collection = cat.get_child('sentinel1-rtc-aws')
+        collection = catalog.get_child('sentinel1-rtc-aws')
 
     paths = get_paths(zone=MGRS[:2], latLabel=MGRS[2], square=MGRS[3:])
     current_items = get_current_item_ids(catalog)
