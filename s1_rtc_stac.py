@@ -40,6 +40,7 @@ if __name__ == '__main__':
         catalog = pystac.Catalog(id='aws-rtc-stac',
                                  description='https://github.com/relativeorbit/aws-rtc-stac')
         collection = create_collection()
+        catalog.add_child(collection)
     else:
         catalog = pystac.read_file('catalog.json')
         collection = catalog.get_child('sentinel1-rtc-aws')
@@ -54,7 +55,6 @@ if __name__ == '__main__':
         items = executor.map(create_item, new_paths)
 
     collection.add_items(items)
-    catalog.add_child(collection)
     catalog.generate_subcatalogs(template='${sentinel:mgrs}/${year}')
     catalog.normalize_hrefs('./')
     catalog.validate() #catalog.validate_all()
