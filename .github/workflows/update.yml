@@ -51,7 +51,6 @@ jobs:
         conda list
 
     - name: Generate STAC
-      env:
       run: |
         ./rtc2stac.py ${{ github.event.inputs.mgrs }}
 
