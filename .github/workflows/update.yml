@@ -2,9 +2,9 @@
 name: STAC Updater
 
 on:
-  schedule:
-    # Run once per day at midnight
-    - cron: "0 0 * * *"
+  # Run once per day at midnight
+  #schedule:
+  #  - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       mgrs:
