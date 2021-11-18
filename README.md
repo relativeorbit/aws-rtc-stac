@@ -7,14 +7,18 @@
 
 This is a template repository with some GitHub Actions to facilitate on-demand generation of static STAC Catalogs for Analysis Ready Sentinel-1 Backscatter Imagery, on the [AWS Public Data Registry](Analysis Ready Sentinel-1 Backscatter Imagery). The goal is to create STAC for a specific MGRS square so that you can easily visualize it and open a notebook to do some custom analysis with Xarray.
 
+Example: https://github.com/relativeorbit/aws-rtc-12SYJ
+
 1. Click 'Use this template'
 1. Go to the 'Actions' tab of your new repository
-1. Run the workflows to add STAC
+1. Run the workflows to add STAC for a particular MGRS Tile
 1. See note below on setting up a STAC Browser webpage
 
 
 ## STAC Browser via GitHub pages
 
+Example: https://relativeorbit.github.io/aws-rtc-12SYJ
+
 1. Go to Settings-->Pages--gh_pages to enable serving Github Pages
 1. Run the STAC Browser GitHub Action
-1. Go to the corresponding website for the repository: https://relativeorbit.github.io/aws-rtc-stac/
+1. Go to the corresponding website for the repository

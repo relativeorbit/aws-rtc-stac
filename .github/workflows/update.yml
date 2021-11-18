@@ -2,11 +2,13 @@
 name: STAC Updater
 
 on:
+  # Run once per day at midnight
+  #schedule:
+  #  - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       mgrs:
-        description: MGRS tile
-        default: 12SYJ
+        description: MGRS tile (e.g. 12SYJ) 
 
 env:
   GDAL_DISABLE_READDIR_ON_OPEN: EMPTY_DIR
@@ -43,7 +45,7 @@ jobs:
         miniforge-version: latest
 #        mamba-version: "*"
         environment-file: environment.yml
-        activate-environment: hackweek
+        activate-environment: aws-rtc-stac
         use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
     - name: List conda packages
@@ -53,6 +55,10 @@ jobs:
     - name: Generate STAC
       run: |
         ./s1_rtc_stac.py ${{ github.event.inputs.mgrs }}
+        
+    - name: Validate STAC
+      run: |
+        stac validate --recurse --no-links --no-assets catalog.json
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
